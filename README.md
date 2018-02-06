@@ -4,8 +4,8 @@ The code contained in this repository will be used to compare the GD32 to the ST
 
 More info at my [BLOG](http://SMDprutser.nl)
 
-Introduction: [STM32F103 vs GD32F103](https://smdprutser.nl/blog/stm32f103-vs-gd32f103/)
-Part 1. [STM32F103 vs GD32F103 Round 1: Solderability](https://smdprutser.nl/blog/stm32f103-vs-gd32f103-round-1-solderability/)
-Part 2. [STM32F103 vs GD32F103 Round 2: Blink a LED](https://smdprutser.nl/blog/stm32f103-vs-gd32f103-round-2-blink-a-led/)
+Introduction: [STM32F103 vs GD32F103](https://smdprutser.nl/blog/stm32f103-vs-gd32f103/) 
+Part 1. [STM32F103 vs GD32F103 Round 1: Solderability](https://smdprutser.nl/blog/stm32f103-vs-gd32f103-round-1-solderability/) 
+Part 2. [STM32F103 vs GD32F103 Round 2: Blink a LED](https://smdprutser.nl/blog/stm32f103-vs-gd32f103-round-2-blink-a-led/) 
 
 
