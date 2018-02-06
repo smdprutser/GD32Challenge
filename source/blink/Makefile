@@ -19,6 +19,16 @@
 
 #OBJS += 
 
+# prolly no the best way, but it works (:
+# need someone with real makefu to correct this
+ifeq ($(STM),1)
+CFLAGS+=-DUSE_STM
+endif
+
+ifeq ($(GD),1)
+CFLAGS+=-DUSE_GD
+endif
+
 BINARY = blink
 
 include ../Makefile.include
