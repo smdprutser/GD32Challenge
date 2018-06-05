@@ -168,7 +168,7 @@ static const uint8_t
       0x0E,
     ST7735_INVOFF , 0      ,  // 13: Don't invert display, no args, no delay
     ST7735_MADCTL , 1      ,  // 14: Memory access control (directions), 1 arg:
-      0xC8,                   //     row addr/col addr, bottom to top refresh
+      0x48,                   //     row addr/col addr, bottom to top refresh // was c8
     ST7735_COLMOD , 1      ,  // 15: set color mode, 1 arg, no delay:
       0x05 },                 //     16-bit color
 
@@ -229,15 +229,11 @@ static const uint8_t
 
 
 
-
+const char scrolltext[]="                          This is part 4 in our series GD32 vs STM32..... This time we address the SPI peripheral.....                           ";
 
 int main(void)
 {
 	int i;
-	uint8_t colorlo, colorhi;
-
-	colorlo=0;
-	colorhi=0;
 
 #ifdef USE_STM
 	rcc_clock_setup_in_hse_8mhz_out_72mhz();
@@ -277,7 +273,7 @@ int main(void)
 	gpio_set_mode(GPIOA, GPIO_MODE_INPUT, GPIO_CNF_INPUT_FLOAT, GPIO6);			// MISO
 	gpio_set_mode(GPIOA, GPIO_MODE_OUTPUT_50_MHZ, GPIO_CNF_OUTPUT_ALTFN_PUSHPULL, GPIO7);	// MOSI
 
-	// setup for mode 0 SPI 36MHz
+	// setup for mode 0 SPI 36MHz/54Mhz (GPIO can do max 50MHz)
 	rcc_periph_clock_enable(RCC_SPI1);
 	spi_reset(SPI1);
 	spi_init_master(SPI1, SPI_CR1_BAUDRATE_FPCLK_DIV_2, SPI_CR1_CPOL_CLK_TO_1_WHEN_IDLE, SPI_CR1_CPHA_CLK_TRANSITION_2, SPI_CR1_DFF_8BIT, SPI_CR1_MSBFIRST);
@@ -299,7 +295,7 @@ int main(void)
 	ST7735_writedat(0x00);
 	ST7735_writedat(0x00);
 	ST7735_writedat(0x00);
-	ST7735_writedat(0x7F);
+	ST7735_writedat(0x7f);
 	ST7735_writecmd(ST7735_RASET);
 	ST7735_writedat(0x00);
 	ST7735_writedat(0x00);
@@ -307,19 +303,15 @@ int main(void)
 	ST7735_writedat(0x9F);
 	ST7735_writecmd(ST7735_RAMWR);
 
+	gpio_set(GPIOA, GPIO3);		// set D/!C=1
+	gpio_clear(GPIOA, GPIO4);	// set CS=0
 
-	while (1)
+	while(1)
 	{
-		for(i=0; i<160*128; i++)
-		{
-			ST7735_writedat(0x00);
-			ST7735_writedat(0x00);
-		}
-		for(i=0; i<160*128; i++)
-		{
-			ST7735_writedat(0xFF);
-			ST7735_writedat(0xFF);
-		}
+		for(i=0; i<160*128*2; i++)
+			spi_xfer(SPI1, 0x00);
+		for(i=0; i<160*128*2; i++)
+			spi_xfer(SPI1, 0xFF);
 	}
 
 	return 0;
@@ -376,10 +368,5 @@ void ST7735_sendinitseq(const uint8_t *addr )
 		}
 	}
 }
-
-
-
-
-
 
 
