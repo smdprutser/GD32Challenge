@@ -276,7 +276,12 @@ int main(void)
 	// setup for mode 0 SPI 36MHz/54Mhz (GPIO can do max 50MHz)
 	rcc_periph_clock_enable(RCC_SPI1);
 	spi_reset(SPI1);
-	spi_init_master(SPI1, SPI_CR1_BAUDRATE_FPCLK_DIV_2, SPI_CR1_CPOL_CLK_TO_1_WHEN_IDLE, SPI_CR1_CPHA_CLK_TRANSITION_2, SPI_CR1_DFF_8BIT, SPI_CR1_MSBFIRST);
+
+	// set spi mode
+//	spi_init_master(SPI1, SPI_CR1_BAUDRATE_FPCLK_DIV_2, SPI_CR1_CPOL_CLK_TO_0_WHEN_IDLE, SPI_CR1_CPHA_CLK_TRANSITION_1, SPI_CR1_DFF_8BIT, SPI_CR1_MSBFIRST);	// mode 0
+//	spi_init_master(SPI1, SPI_CR1_BAUDRATE_FPCLK_DIV_2, SPI_CR1_CPOL_CLK_TO_0_WHEN_IDLE, SPI_CR1_CPHA_CLK_TRANSITION_2, SPI_CR1_DFF_8BIT, SPI_CR1_MSBFIRST);	// mode 1
+//	spi_init_master(SPI1, SPI_CR1_BAUDRATE_FPCLK_DIV_2, SPI_CR1_CPOL_CLK_TO_1_WHEN_IDLE, SPI_CR1_CPHA_CLK_TRANSITION_1, SPI_CR1_DFF_8BIT, SPI_CR1_MSBFIRST);	// mode 2
+	spi_init_master(SPI1, SPI_CR1_BAUDRATE_FPCLK_DIV_2, SPI_CR1_CPOL_CLK_TO_1_WHEN_IDLE, SPI_CR1_CPHA_CLK_TRANSITION_2, SPI_CR1_DFF_8BIT, SPI_CR1_MSBFIRST);	// mode 3
 	spi_set_full_duplex_mode(SPI1);
 	gpio_set(GPIOA, GPIO3);	// cs=1
 	spi_enable(SPI1);
@@ -309,9 +314,9 @@ int main(void)
 	while(1)
 	{
 		for(i=0; i<160*128*2; i++)
-			spi_xfer(SPI1, 0x00);
+			spi_xfer(SPI1, 0xAA);
 		for(i=0; i<160*128*2; i++)
-			spi_xfer(SPI1, 0xFF);
+			spi_xfer(SPI1, 0x55);
 	}
 
 	return 0;
